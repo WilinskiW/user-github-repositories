@@ -11,10 +11,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ControllerAdvice
-public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(HttpClientErrorException.class)
-    public ResponseEntity<Map<String, Object>> handleHttpClientErrorException(HttpClientErrorException ex) {
+    ResponseEntity<Map<String, Object>> handleHttpClientErrorException(HttpClientErrorException ex) {
         Map<String, Object> body = new HashMap<>();
 
         body.put("status", HttpStatus.NOT_FOUND.value());

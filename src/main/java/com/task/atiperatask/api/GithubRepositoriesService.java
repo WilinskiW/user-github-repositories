@@ -14,17 +14,18 @@ import java.util.stream.Collectors;
 
 
 @Service
-public class GithubRepositoriesService {
+class GithubRepositoriesService {
     private final RestClient restClient;
 
-    public GithubRepositoriesService() {
+    GithubRepositoriesService() {
         this.restClient = RestClient.create();
     }
 
-    public ResponseEntity<List<Map<String, Object>>> getUserRepositories(String username) {
+    ResponseEntity<List<Map<String, Object>>> getUserRepositories(String username) {
         List<UserRepository> response = restClient.get()
                 .uri("https://api.github.com/users/" + username + "/repos")
-                .retrieve().body(new ParameterizedTypeReference<>() {});
+                .retrieve().body(new ParameterizedTypeReference<>() {
+                });
 
         List<Map<String, Object>> repositories = response.stream()
                 .filter(repository -> !repository.fork())
@@ -41,7 +42,8 @@ public class GithubRepositoriesService {
 
         List<Branches> branches = restClient.get()
                 .uri(repository.branches_url().replace("{/branch}", ""))
-                .retrieve().body(new ParameterizedTypeReference<>() {});
+                .retrieve().body(new ParameterizedTypeReference<>() {
+                });
 
         List<Map<String, String>> branchesMap = new ArrayList<>();
         branches.forEach(branch -> {
