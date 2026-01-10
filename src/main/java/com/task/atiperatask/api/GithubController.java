@@ -1,7 +1,9 @@
 package com.task.atiperatask.api;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -14,8 +16,7 @@ public class GithubController {
     }
 
     @PostMapping("/repositories")
-    public void getUserRepositories(@RequestBody Map<String, String> body) {
-        String authToken = body.get("authToken");
-        repositoryService.getUserRepositories(authToken);
+    public ResponseEntity<List<Map<String, Object>>> getUserRepositories(@RequestBody Map<String, String> username) {
+        return repositoryService.getUserRepositories(username.get("username").strip());
     }
 }
