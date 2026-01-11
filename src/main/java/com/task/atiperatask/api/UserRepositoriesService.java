@@ -10,10 +10,10 @@ import java.util.Optional;
 
 
 @Service
-class UserGithubRepositoriesService {
+class UserRepositoriesService {
     private final RestClient restClient;
 
-    UserGithubRepositoriesService(RestClient restClient) {
+    UserRepositoriesService(RestClient restClient) {
         this.restClient = restClient;
     }
 

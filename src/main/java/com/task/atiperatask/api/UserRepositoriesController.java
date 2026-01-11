@@ -9,9 +9,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 class UserRepositoriesController {
-    private final UserGithubRepositoriesService repositoryService;
+    private final UserRepositoriesService repositoryService;
 
-    UserRepositoriesController(UserGithubRepositoriesService repositoryService) {
+    UserRepositoriesController(UserRepositoriesService repositoryService) {
         this.repositoryService = repositoryService;
     }
 
