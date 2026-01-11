@@ -1,12 +1,12 @@
 package com.task.atiperatask.api;
 
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -17,37 +17,41 @@ class UserGithubRepositoriesService {
         this.restClient = restClient;
     }
 
-    ResponseEntity<List<RepositoryResponse>> getUserRepositories(String username) {
-        List<GithubRepository> response = restClient.get()
+    List<UserRepository> getUserRepositories(String username) {
+        List<GithubRepository> githubRepos = restClient.get()
                 .uri("/users/{username}/repos", username)
-                .retrieve().body(new ParameterizedTypeReference<>() {});
+                .retrieve()
+                .body(new ParameterizedTypeReference<>() {});
 
 
-        List<RepositoryResponse> repositories = response.stream()
+        return Optional.ofNullable(githubRepos)
+                .orElse(Collections.emptyList())
+                .stream()
                 .filter(repository -> !repository.fork())
-                .map(this::mapToRepository)
+                .map(this::mapToUserRepository)
                 .toList();
-
-        return new ResponseEntity<>(repositories, HttpStatus.OK);
     }
 
-    private RepositoryResponse mapToRepository(GithubRepository repository) {
-        System.out.println(repository);
-        String cleanBranchUrl = repository.branchesUrl().replace("{/branch}", "");
+    private UserRepository mapToUserRepository(GithubRepository githubRepo) {
+        String cleanBranchUrl = githubRepo.branchesUrl().replace("{/branch}", "");
 
-        List<Branches> branches = restClient.get()
+        List<GithubBranch> githubRepoBranches = restClient.get()
                 .uri(cleanBranchUrl)
-                .retrieve().body(new ParameterizedTypeReference<>() {
-                });
+                .retrieve()
+                .body(new ParameterizedTypeReference<>() {});
 
-        List<RepositoryResponse.BranchDto> branchesMap = branches.stream()
-                .map(branch -> new RepositoryResponse.BranchDto(branch.name(), branch.commit().sha()))
+        List<UserRepository.BranchDto> repoBranches = Optional.ofNullable(githubRepoBranches)
+                .orElse(Collections.emptyList())
+                .stream()
+                .map(githubBranch ->
+                        new UserRepository.BranchDto(githubBranch.name(), githubBranch.commit().sha())
+                )
                 .toList();
 
-        return new RepositoryResponse(
-                repository.name(),
-                repository.owner().login(),
-                branchesMap
+        return new UserRepository(
+                githubRepo.name(),
+                githubRepo.owner().login(),
+                repoBranches
         );
     }
 }

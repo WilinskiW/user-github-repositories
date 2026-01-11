@@ -11,7 +11,7 @@ class WebConfig {
     RestClient restClient(@Value("${api.github.url}") String apiUrl) {
         return RestClient.builder()
                 .baseUrl(apiUrl)
-                .defaultHeader("accept", "application/vnd.github+json")
+                .defaultHeader("Accept", "application/vnd.github+json")
                 .build();
     }
 }
