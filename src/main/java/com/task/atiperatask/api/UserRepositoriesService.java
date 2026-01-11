@@ -17,14 +17,14 @@ public class UserRepositoriesService {
         this.restClient = restClient;
     }
 
-    List<UserRepositoryDto> getUserRepositories(String username) {
+    public List<UserRepositoryDto> getUserRepositories(String username) {
         List<GithubRepositoryDto> githubRepos = fetchRepositories(username);
         return convertToResponse(githubRepos);
     }
 
     private List<GithubRepositoryDto> fetchRepositories(String username) {
         return restClient.get()
-                .uri("/users/{username}/repos", username)
+                .uri("/users/{username}/repos", username.toLowerCase())
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {
                 });
