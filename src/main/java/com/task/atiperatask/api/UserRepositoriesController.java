@@ -16,8 +16,8 @@ class UserRepositoriesController {
     }
 
     @GetMapping("/{username}/repositories")
-    ResponseEntity<List<UserRepository>> getUserRepositories(@PathVariable String username) {
-        List<UserRepository> repositories = repositoryService.getUserRepositories(username);
+    ResponseEntity<List<UserRepositoryDto>> getUserRepositories(@PathVariable String username) {
+        List<UserRepositoryDto> repositories = repositoryService.getUserRepositories(username);
         return new ResponseEntity<>(repositories, HttpStatus.OK);
     }
 }
