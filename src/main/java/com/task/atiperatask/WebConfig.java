@@ -1,4 +1,4 @@
-package com.task.atiperatask.api;
+package com.task.atiperatask;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

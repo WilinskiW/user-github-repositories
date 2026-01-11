@@ -1,4 +1,4 @@
-package com.task.atiperatask.api;
+package com.task.atiperatask;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

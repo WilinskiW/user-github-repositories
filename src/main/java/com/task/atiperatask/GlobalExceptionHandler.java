@@ -1,4 +1,4 @@
-package com.task.atiperatask.api;
+package com.task.atiperatask;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

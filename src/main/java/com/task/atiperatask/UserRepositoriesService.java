@@ -1,4 +1,4 @@
-package com.task.atiperatask.api;
+package com.task.atiperatask;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
@@ -10,14 +10,14 @@ import java.util.Optional;
 
 
 @Service
-public class UserRepositoriesService {
+class UserRepositoriesService {
     private final RestClient restClient;
 
     UserRepositoriesService(RestClient restClient) {
         this.restClient = restClient;
     }
 
-    public List<UserRepositoryDto> getUserRepositories(String username) {
+    List<UserRepositoryDto> getUserRepositories(String username) {
         List<GithubRepositoryDto> githubRepos = fetchRepositories(username);
         return convertToResponse(githubRepos);
     }
