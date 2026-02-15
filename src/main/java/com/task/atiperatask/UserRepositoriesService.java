@@ -7,6 +7,7 @@ import org.springframework.web.client.RestClient;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -17,7 +18,7 @@ class UserRepositoriesService {
         this.restClient = restClient;
     }
 
-    List<UserRepositoryDto> getUserRepositories(String username) {
+    UserNonForkRepositoriesDto getUserRepositories(String username) {
         List<GithubRepositoryDto> githubRepos = fetchRepositories(username);
         return convertToResponse(githubRepos);
     }
@@ -30,13 +31,16 @@ class UserRepositoriesService {
                 });
     }
 
-    private List<UserRepositoryDto> convertToResponse(List<GithubRepositoryDto> githubRepos) {
+    private UserNonForkRepositoriesDto convertToResponse(List<GithubRepositoryDto> githubRepos) {
         return Optional.ofNullable(githubRepos)
                 .orElse(Collections.emptyList())
                 .stream()
                 .filter(repository -> !repository.fork())
                 .map(this::mapToUserRepositoryDto)
-                .toList();
+                .collect(Collectors.collectingAndThen(
+                        Collectors.toList(),
+                        UserNonForkRepositoriesDto::new
+                ));
     }
 
 
