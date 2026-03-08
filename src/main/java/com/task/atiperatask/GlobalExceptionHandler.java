@@ -29,7 +29,7 @@ class GlobalExceptionHandler {
 
         var errorBody = new UserNotFoundErrorDto(ex.getStatusCode().value(), githubErrorMsg);
 
-        return new ResponseEntity<>(errorBody, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorBody, ex.getStatusCode());
     }
 
     @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)

@@ -34,7 +34,7 @@ class UserRepositoriesService {
     private UserNonForkRepositoriesDto convertToResponse(List<GithubRepositoryDto> githubRepos) {
         return Optional.ofNullable(githubRepos)
                 .orElse(Collections.emptyList())
-                .stream()
+                .parallelStream()
                 .filter(repository -> !repository.fork())
                 .map(this::mapToUserRepositoryDto)
                 .collect(Collectors.collectingAndThen(
@@ -69,7 +69,7 @@ class UserRepositoriesService {
     private List<UserRepositoryDto.Branch> convertToBranches(List<GithubBranchDto> githubRepoBranches) {
         return Optional.ofNullable(githubRepoBranches)
                 .orElse(Collections.emptyList())
-                .stream()
+                .parallelStream()
                 .map(githubBranchDto ->
                         new UserRepositoryDto.Branch(githubBranchDto.name(), githubBranchDto.commit().sha())
                 )
